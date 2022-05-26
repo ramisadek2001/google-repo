@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="200dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_marginLeft="5dp"
+    android:background="#F2F2F2"
+
+
+    android:layout_height="350dp"
+    >
+
+
+    <ImageView
+        android:id="@+id/cvTicket"
+        android:layout_width="189dp"
+        android:layout_height="236dp"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="0dp"
+        android:background="@drawable/round"
+        android:backgroundTint="@color/white"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="50dp" />
+
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imgCircle"
+        android:layout_width="147dp"
+        android:layout_height="139dp"
+        android:layout_alignStart="@+id/cvTicket"
+        android:layout_alignTop="@+id/cvTicket"
+        android:layout_alignEnd="@+id/cvTicket"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="21dp"
+        android:layout_marginTop="-47dp"
+        android:layout_marginEnd="21dp"
+        android:translationZ="90dp"
+
+        app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
+
+        />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="190dp"
+        android:layout_height="89dp"
+        android:layout_below="@+id/imgCircle"
+        android:layout_alignStart="@+id/cvTicket"
+        android:layout_alignEnd="@+id/cvTicket"
+        android:layout_alignBottom="@id/cvTicket"
+        android:layout_gravity="center"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="34dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="38dp"
+        android:fontFamily="sans-serif"
+        android:text=""
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="16dp" />
+
+
+</RelativeLayout>
