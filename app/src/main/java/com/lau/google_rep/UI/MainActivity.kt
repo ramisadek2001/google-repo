@@ -34,9 +34,11 @@ class MainActivity : AppCompatActivity() {
     private val retrofitService = RetrofitService.getInstance()
     val adapter = MainAdapter()
     var currentPage = 0
-    val TOTAL_PAGES = 10
-    var isLoading by Delegates.notNull<Boolean>()
-    var isLastPage by Delegates.notNull<Boolean>()
+    val TOTAL_PAGES = 5
+    var isLoading = false
+    var isLastPage = false
+    var i: Int = 0
+    var totalitems: Int = 3
     val response = MainRepository(retrofitService).getAllrepos()
 
 
@@ -55,49 +57,69 @@ class MainActivity : AppCompatActivity() {
         val linearLayoutManager : LinearLayoutManager = LinearLayoutManager(this)
         binding.recyclerview.layoutManager = linearLayoutManager
 
+
+        
+
         binding.recyclerview.addOnScrollListener(object: PaginationScrollListener(linearLayoutManager){
             override fun loadMoreItems() {
-                isLoading = true
                 currentPage += 1
+                totalitems += 3
+                loadNextPage()
 
-
-                response.enqueue(object : Callback<List<repo>> {
-
-                    override fun onResponse(call: Call<List<repo>>, response: Response<List<repo>>) {
-
-                        adapter.removeLoadingFooter()
-                        isLoading = false
-                        val results = response.body()
-                        if (results != null) {
-                            adapter.addAll(results)
-                        }
-                        if (currentPage !== TOTAL_PAGES) adapter.addLoadingFooter() else isLastPage =
-                            true
-                    }
-
-                    override fun onFailure(call: Call<List<repo>>, t: Throwable) {
-                        t.printStackTrace()
-                    }
-                })
             }
 
-            override var isLastPage: Boolean = false
+            override var isLastPage: Boolean = this@MainActivity.isLastPage
 
-            override var isLoading: Boolean = false
+            override var isLoading: Boolean = this@MainActivity.isLoading
 
 
         })
 
 
 
-            viewModel.repoList.observe(this, Observer {
+//            viewModel.repoList.observe(this, Observer {
+//
+//                Log.d(TAG, "onCreate: $it")
+//                adapter.setRepoList(it)
+//
+//            })
+//            viewModel.errorMessage.observe(this, Observer {
+//            })
+       loadFirstPage()
 
-                Log.d(TAG, "onCreate: $it")
-                adapter.setRepoList(it)
 
-            })
-            viewModel.errorMessage.observe(this, Observer {
-            })
+    }
+    fun loadNextPage() {
+        Log.e(TAG, "loadNextPage: $totalitems $i", )
+
+        response.clone().enqueue(object : Callback<List<repo>> {
+
+            override fun onResponse(call: Call<List<repo>>, response: Response<List<repo>>) {
+
+                adapter.removeLoadingFooter()
+                isLoading = false
+                val results = response.body()
+                if (results != null) {
+                    while (i<totalitems){
+                        adapter.add(results[i])
+
+                        i++
+                    }
+
+
+
+                }
+                if (currentPage !== TOTAL_PAGES) adapter.addLoadingFooter() else isLastPage =
+                    true
+            }
+
+            override fun onFailure(call: Call<List<repo>>, t: Throwable) {
+                t.printStackTrace()
+            }
+        })
+    }
+    fun loadFirstPage(){
+
         response.enqueue(object : Callback<List<repo>> {
 
             override fun onResponse(call: Call<List<repo>>, response: Response<List<repo>>) {
@@ -105,7 +127,15 @@ class MainActivity : AppCompatActivity() {
                 val results: List<repo>? = response.body()
                 binding.progressbar.setVisibility(View.GONE)
                 if (results != null) {
-                    adapter.addAll(results)
+
+                    while (i<totalitems){
+                        adapter.add(results[i])
+                        i++
+
+                    }
+
+
+
                 }
 
                 if (currentPage <= TOTAL_PAGES) adapter.addLoadingFooter() else isLastPage =
@@ -116,8 +146,6 @@ class MainActivity : AppCompatActivity() {
                 t.printStackTrace()
             }
         })
-
-
     }
 
 }

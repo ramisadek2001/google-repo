@@ -1,5 +1,7 @@
 package com.lau.google_rep.ViewModel
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,12 +14,12 @@ abstract class PaginationScrollListener(private val layoutManager: LinearLayoutM
         val visibleItemCount = layoutManager.childCount
         val totalItemCount = layoutManager.itemCount
         val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+        Log.e(TAG, "onScrolled: $isLoading $isLastPage", )
         if (!isLoading && !isLastPage) {
-            if (visibleItemCount + firstVisibleItemPosition >= totalItemCount
-                && firstVisibleItemPosition >= 0
-            ) {
+
+
                 loadMoreItems()
-            }
+
         }
     }
 

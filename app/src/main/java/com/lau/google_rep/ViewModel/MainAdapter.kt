@@ -16,7 +16,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
-import android.graphics.Movie
+
 
 
 
@@ -47,7 +47,7 @@ class MainAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
             LOADING -> {
                 val viewLoading: View =
-                    inflater.inflate(com.lau.google_rep.R.layout.loading, parent, false)
+                    inflater.inflate(com.lau.google_rep.R.layout.activity_main, parent, false)
                 viewHolder = LoadingViewHolder(viewLoading)
             }
         }
@@ -58,11 +58,12 @@ class MainAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
-        val mainViewHolder: MainViewHolder = holder as MainViewHolder
+
         val repo = repos[position]
 
         when (getItemViewType(position)) {
             ITEM -> {
+                val mainViewHolder: MainViewHolder = holder as MainViewHolder
                 mainViewHolder.Title?.text = repo.name
                 mainViewHolder.Image?.let {
                     Glide.with(holder.itemView.context).load(repo.owner.avatar_url).into(
@@ -127,7 +128,7 @@ class MainAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         val progressBar: ProgressBar
 
         init {
-            progressBar = itemView.findViewById(com.lau.google_rep.R.id.progressbar)
+            progressBar = itemView.findViewById(com.lau.google_rep.R.id.progressbar)!!
         }
     }
 }
