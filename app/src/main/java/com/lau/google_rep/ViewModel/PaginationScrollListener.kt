@@ -2,12 +2,13 @@ package com.lau.google_rep.ViewModel
 
 import android.content.ContentValues.TAG
 import android.util.Log
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import androidx.recyclerview.widget.LinearLayoutManager
 
 
-abstract class PaginationScrollListener(private val layoutManager: LinearLayoutManager) :
+abstract class PaginationScrollListener(private val layoutManager: GridLayoutManager) :
     RecyclerView.OnScrollListener() {
     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
         super.onScrolled(recyclerView, dx, dy)
