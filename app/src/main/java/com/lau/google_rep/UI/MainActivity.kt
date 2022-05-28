@@ -66,6 +66,7 @@ class MainActivity : AppCompatActivity() {
                 totalitems += 3
                 loadNextPage()
 
+
             }
 
             override var isLastPage: Boolean = this@MainActivity.isLastPage
@@ -100,10 +101,10 @@ class MainActivity : AppCompatActivity() {
                 isLoading = false
                 val results = response.body()
                 if (results != null) {
-                    while (i<totalitems){
+                    while (i<totalitems && totalitems< results.size + 2){
                         adapter.add(results[i])
-
                         i++
+
                     }
 
 
