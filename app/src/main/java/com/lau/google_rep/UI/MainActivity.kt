@@ -25,8 +25,6 @@ import kotlin.properties.Delegates
 import android.graphics.Movie
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.lau.google_rep.InfoFragment
-import com.lau.google_rep.MainFragment
 import com.lau.google_rep.databinding.ActivityMainBinding
 
 
@@ -49,17 +47,19 @@ class MainActivity : AppCompatActivity() {
 //
 //        viewModel.initializeRecycler(binding,context)
 
-        val firstFragment=com.lau.google_rep.MainFragment()
-        val secondFragment= com.lau.google_rep.InfoFragment()
+        val firstFragment=com.lau.google_rep.UI.Fragments.MainFragment()
+        val secondFragment= com.lau.google_rep.UI.Fragments.InfoFragment()
 
         setCurrentFragment(firstFragment)
         val bottomNavigationView : BottomNavigationView = findViewById(R.id.bottom_navigation)
 
-        bottomNavigationView.setOnItemReselectedListener {
-            when(it.itemId){
-                R.id.list->setCurrentFragment(firstFragment)
-                R.id.Information->setCurrentFragment(secondFragment)
+        bottomNavigationView.setOnNavigationItemSelectedListener {
 
+            when(it.itemId){
+                R.id.list -> setCurrentFragment(firstFragment)
+                R.id.Information -> {
+                    setCurrentFragment(secondFragment)
+                }
             }
             true
         }

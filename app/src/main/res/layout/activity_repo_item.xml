@@ -1,9 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".UI.repo_item">
+    <include
+        android:id="@+id/include"
+        layout="@layout/repo_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:id="@+id/image_rep"
+        android:src="@drawable/ic_baseline_info_24"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:id="@+id/name"
+        android:layout_marginTop="50dp"
+        android:fontFamily="sans-serif-black"
+        android:text="Repo"
+        android:textColor="@color/black"
+        android:textSize="35dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/customborder"
+        android:layout_marginTop="60dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="stargazers count:"
+            android:textSize="20dp"
+
+            />
+
+        <TextView
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="45dp"
+            android:textAlignment="textEnd"
+            android:layout_marginRight="10dp"
+            android:textColor="@color/black"
+            android:id="@+id/stargazers_count"
+            android:fontFamily="sans-serif-black"
+            android:text="1000000000"
+            android:textSize="16dp" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/customborder"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="created at:"
+            android:textSize="20dp"
+
+            />
+
+        <TextView
+            android:id="@+id/created"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="55dp"
+            android:layout_marginRight="10dp"
+            android:fontFamily="sans-serif-black"
+            android:textColor="@color/black"
+            android:text="1000"
+            android:textAlignment="textEnd"
+            android:textSize="16dp" />
+    </LinearLayout>
+
+
+
+
+</LinearLayout>

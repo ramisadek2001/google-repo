@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import androidx.recyclerview.widget.LinearLayoutManager
+import java.util.logging.Handler
 
 
 abstract class PaginationScrollListener(private val layoutManager: GridLayoutManager) :
@@ -17,8 +18,6 @@ abstract class PaginationScrollListener(private val layoutManager: GridLayoutMan
         val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
         Log.e(TAG, "onScrolled: $isLoading $isLastPage", )
         if (!isLoading && !isLastPage) {
-
-
                 loadMoreItems()
 
         }

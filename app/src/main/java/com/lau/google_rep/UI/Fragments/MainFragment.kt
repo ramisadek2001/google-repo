@@ -1,4 +1,4 @@
-package com.lau.google_rep
+package com.lau.google_rep.UI.Fragments
 
 import android.content.Context
 import android.os.Bundle
