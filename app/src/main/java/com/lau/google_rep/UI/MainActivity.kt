@@ -17,22 +17,25 @@ import com.lau.google_rep.ViewModel.PaginationScrollListener
 import com.lau.google_rep.ViewModel.ViewModelFactory
 import com.lau.google_rep.data.RetrofitService
 import com.lau.google_rep.data.repo
-import com.lau.google_rep.databinding.ActivityMainBinding
 import com.lau.google_rep.repository.MainRepository
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import kotlin.properties.Delegates
 import android.graphics.Movie
-
-
+import androidx.fragment.app.Fragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.lau.google_rep.InfoFragment
+import com.lau.google_rep.MainFragment
+import com.lau.google_rep.databinding.ActivityMainBinding
 
 
 class MainActivity : AppCompatActivity() {
     private val TAG = "MainActivity"
-    lateinit var binding: ActivityMainBinding
-    lateinit var viewModel: MainViewModel
-    private val retrofitService = RetrofitService.getInstance()
+
+//    lateinit var viewModel: MainViewModel
+//    private val retrofitService = RetrofitService.getInstance()
+
 
 
 
@@ -40,16 +43,35 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        this.binding = ActivityMainBinding.inflate(layoutInflater)
+//        viewModel = ViewModelProvider(this, ViewModelFactory(MainRepository(retrofitService))).get(MainViewModel::class.java)
+//
+//        val context : Context = this.applicationContext
+//
+//        viewModel.initializeRecycler(binding,context)
 
-        setContentView(binding.root)
+        val firstFragment=com.lau.google_rep.MainFragment()
+        val secondFragment= com.lau.google_rep.InfoFragment()
 
-        viewModel = ViewModelProvider(this, ViewModelFactory(MainRepository(retrofitService))).get(MainViewModel::class.java)
+        setCurrentFragment(firstFragment)
+        val bottomNavigationView : BottomNavigationView = findViewById(R.id.bottom_navigation)
 
-        val context : Context = this.applicationContext
+        bottomNavigationView.setOnItemReselectedListener {
+            when(it.itemId){
+                R.id.list->setCurrentFragment(firstFragment)
+                R.id.Information->setCurrentFragment(secondFragment)
 
-        viewModel.initializeRecycler(binding,context)
-
+            }
+            true
+        }
 
     }
+
+    private fun setCurrentFragment(fragment:Fragment) {
+        if (fragment!=null){
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.fragment_container,fragment)
+            transaction.commit()
+        }
+    }
+
 }

@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.lau.google_rep.data.repo
-import com.lau.google_rep.databinding.RepoLayoutBinding
 import android.R
 import android.graphics.Insets.add
 import android.graphics.drawable.Drawable
@@ -28,6 +27,11 @@ class MainAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val ITEM = 1
     private var isLoadingAdded = false
 
+    private lateinit var   mlistener: onItemClickListener
+    interface  onItemClickListener{
+        fun OnItemClick(position: Int)
+    }
+
     var repos = mutableListOf<repo>()
 
     fun setRepoList(repos: List<repo>) {
@@ -43,17 +47,23 @@ class MainAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             ITEM -> {
                 val viewItem: View =
                     inflater.inflate(com.lau.google_rep.R.layout.repo_layout, parent, false)
-                viewHolder = MainViewHolder(viewItem)
+                viewHolder = MainViewHolder(viewItem, mlistener)
             }
             LOADING -> {
                 val viewLoading: View =
-                    inflater.inflate(com.lau.google_rep.R.layout.activity_main, parent, false)
+                    inflater.inflate(com.lau.google_rep.R.layout.fragment_main, parent, false)
                 viewHolder = LoadingViewHolder(viewLoading)
             }
         }
 
 
         return viewHolder!!
+    }
+
+    fun setOnItemClickListener(listener : onItemClickListener){
+
+        mlistener = listener
+
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -116,12 +126,17 @@ class MainAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
-    class MainViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class MainViewHolder(itemView: View, listener: onItemClickListener) : RecyclerView.ViewHolder(itemView) {
         var Title: TextView? =
             itemView.findViewById<View>(com.lau.google_rep.R.id.title) as TextView
         var Image: ImageView? =
             itemView.findViewById<View>(com.lau.google_rep.R.id.imgCircle) as ImageView
 
+        init {
+            itemView.setOnClickListener {
+                listener.OnItemClick(adapterPosition)
+            }
+        }
     }
 
     class LoadingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
