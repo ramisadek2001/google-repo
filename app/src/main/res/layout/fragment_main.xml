@@ -6,6 +6,15 @@
     tools:context=".UI.Fragments.MainFragment"
     android:background="#F2F2F2">
 
+    <include
+        android:id="@+id/include"
+        layout="@layout/search_toolbat"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_alignParentTop="true"
+
+        />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview"
         android:layout_width="match_parent"

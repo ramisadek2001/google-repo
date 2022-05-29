@@ -14,6 +14,7 @@ import android.graphics.Movie
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.SearchView
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -46,7 +47,7 @@ import java.util.zip.Inflater
 
 
 
-     fun initializeRecycler(binding: FragmentMainBinding, context: Context){
+     fun initializeRecycler(binding: FragmentMainBinding, context: Context ){
          this.binding = binding
 
          binding.recyclerview.adapter = adapter
@@ -79,6 +80,18 @@ import java.util.zip.Inflater
 
                  startActivity(context,intent,null)
 
+             }
+
+         })
+
+        binding.include.search.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+             override fun onQueryTextSubmit(p0: String?): Boolean {
+                 return false
+             }
+
+             override fun onQueryTextChange(p0: String?): Boolean {
+                adapter.filter.filter(p0)
+                 return false
              }
 
          })

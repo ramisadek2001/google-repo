@@ -9,10 +9,8 @@ import android.R
 import android.graphics.Insets.add
 import android.graphics.drawable.Drawable
 import android.view.View
-import android.widget.ImageView
+import android.widget.*
 
-import android.widget.ProgressBar
-import android.widget.TextView
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 
@@ -21,7 +19,7 @@ import com.bumptech.glide.request.target.Target
 
 
 
-class MainAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MainAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() , Filterable {
 
     private val LOADING = 0
     private val ITEM = 1
@@ -32,7 +30,8 @@ class MainAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         fun OnItemClick(position: Int)
     }
 
-    var repos = mutableListOf<repo>()
+    var repos: MutableList<repo> = ArrayList()
+    private var reposFull : MutableList<repo> = ArrayList()
 
     fun setRepoList(repos: List<repo>) {
         this.repos = repos.toMutableList()
@@ -104,6 +103,7 @@ class MainAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
     fun add(repo: repo) {
         repos.add(repo)
+        reposFull.add(repo)
         notifyItemInserted(repos.size - 1)
     }
 
@@ -144,6 +144,34 @@ class MainAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         init {
             progressBar = itemView.findViewById(com.lau.google_rep.R.id.progressbar)!!
+        }
+    }
+
+    override fun getFilter(): Filter {
+        return exampleFilter
+    }
+    private val exampleFilter: Filter = object : Filter() {
+        override fun performFiltering(constraint: CharSequence?): FilterResults? {
+            val filteredList: MutableList<repo> = ArrayList()
+            if (constraint == null || constraint.length == 0) {
+                filteredList.addAll(reposFull)
+            } else {
+                val filterPattern = constraint.toString().toLowerCase().trim { it <= ' ' }
+                for (item in reposFull) {
+                    if (item.name.toLowerCase().contains(filterPattern)) {
+                        filteredList.add(item)
+                    }
+                }
+            }
+            val results = FilterResults()
+            results.values = filteredList
+            return results
+        }
+
+        override fun publishResults(constraint: CharSequence?, results: FilterResults) {
+            repos.clear()
+            repos.addAll(results.values as Collection<repo>)
+            notifyDataSetChanged()
         }
     }
 }
