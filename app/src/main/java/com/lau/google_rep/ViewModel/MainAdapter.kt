@@ -6,8 +6,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.lau.google_rep.data.repo
 import android.R
+import android.annotation.SuppressLint
+import android.content.ContentValues.TAG
 import android.graphics.Insets.add
 import android.graphics.drawable.Drawable
+import android.util.Log
 import android.view.View
 import android.widget.*
 
@@ -104,10 +107,8 @@ class MainAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() , Filterable
         notifyItemInserted(repos.size - 1)
     }
 
-    fun addAll(repoResults: List<repo>) {
-        for (result in repoResults) {
-            add(result)
-        }
+    fun addAll(repoList: List<repo?>) {
+        this.repos = repoList as MutableList<repo>
     }
 
     fun getItem(position: Int): repo {
@@ -117,15 +118,32 @@ class MainAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() , Filterable
         isLoadingAdded = false
 
 
-        if(repos.size !== 0){
             val position: Int = repos.size -1
+
+        if (repos.size > 1){
             val result: repo = getItem(position)
             if (result != null) {
                 repos.removeAt(position)
                 notifyItemRemoved(position)
             }
         }
+    }
+    fun getSearchItem(position: Int): repo {
+        return reposFull.get(position)
+    }
+    fun removeLoadingSearchFooter() {
+        isLoadingAdded = false
 
+
+        val position: Int = reposFull.size - 1
+
+        if (reposFull.size > 1){
+            val result: repo = getSearchItem(position)
+            if (result != null) {
+                reposFull.removeAt(position)
+                notifyItemRemoved(position)
+            }
+        }
     }
 
     class MainViewHolder(itemView: View, listener: onItemClickListener) : RecyclerView.ViewHolder(itemView) {
@@ -150,6 +168,7 @@ class MainAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() , Filterable
     }
 
     override fun getFilter(): Filter {
+
         return exampleFilter
     }
     private val exampleFilter: Filter = object : Filter() {
@@ -161,18 +180,27 @@ class MainAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() , Filterable
                 val filterPattern = constraint.toString().toLowerCase().trim { it <= ' ' }
                 for (item in reposFull) {
                     if (item.name.toLowerCase().contains(filterPattern)) {
-                        filteredList.add(item)
+                            filteredList.add(item)
                     }
                 }
             }
+            Log.d(TAG, "publishResults: $filteredList")
             val results = FilterResults()
             results.values = filteredList
             return results
         }
 
+        @SuppressLint("NotifyDataSetChanged")
         override fun publishResults(constraint: CharSequence?, results: FilterResults) {
             repos.clear()
+
+
+
+
             (results.values as? Collection<repo>)?.let { repos.addAll(it) }
+
+
+
             notifyDataSetChanged()
         }
     }

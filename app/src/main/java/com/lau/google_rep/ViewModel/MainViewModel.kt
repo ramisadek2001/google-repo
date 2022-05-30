@@ -43,6 +43,7 @@ class MainViewModel  constructor(private val repository: MainRepository)  : View
      var isLoading = false
      var isLastPage = false
      lateinit var handler: Handler
+
      var i: Int = 0
      lateinit var binding: FragmentMainBinding
      var totalitems: Int = 3
@@ -101,6 +102,7 @@ class MainViewModel  constructor(private val repository: MainRepository)  : View
              }
 
              override fun onQueryTextChange(p0: String?): Boolean {
+                 adapter.removeLoadingSearchFooter()
                 adapter.filter.filter(p0)
                  return false
              }
@@ -118,7 +120,7 @@ class MainViewModel  constructor(private val repository: MainRepository)  : View
 
              override fun onResponse(call: Call<List<repo>>, response: Response<List<repo>>) {
 //
-//                 adapter.removeLoadingFooter()
+                 adapter.removeLoadingFooter()
                  isLoading = false
                  adapter.isLoadingAdded = false
                  val inflatedView: View = View.inflate(context, com.lau.google_rep.R.layout.loading,null)
