@@ -79,10 +79,6 @@ class MainAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() , Filterable
             }
             LOADING -> {
                 val loadingViewHolder = holder as LoadingViewHolder
-                if(!isLoadingAdded){
-                   loadingViewHolder.progressBar.visibility = View.GONE
-                }
-
 
             }
         }
@@ -121,12 +117,15 @@ class MainAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() , Filterable
         isLoadingAdded = false
 
 
-        val position: Int = repos.size - 1
-        val result: repo = getItem(position)
-        if (result != null) {
-            repos.removeAt(position)
-            notifyItemRemoved(position)
+        if(repos.size !== 0){
+            val position: Int = repos.size -1
+            val result: repo = getItem(position)
+            if (result != null) {
+                repos.removeAt(position)
+                notifyItemRemoved(position)
+            }
         }
+
     }
 
     class MainViewHolder(itemView: View, listener: onItemClickListener) : RecyclerView.ViewHolder(itemView) {
@@ -173,7 +172,7 @@ class MainAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() , Filterable
 
         override fun publishResults(constraint: CharSequence?, results: FilterResults) {
             repos.clear()
-            repos.addAll(results.values as Collection<repo>)
+            (results.values as? Collection<repo>)?.let { repos.addAll(it) }
             notifyDataSetChanged()
         }
     }
