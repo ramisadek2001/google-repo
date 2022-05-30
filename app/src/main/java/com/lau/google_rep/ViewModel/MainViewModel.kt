@@ -27,9 +27,10 @@ import com.lau.google_rep.databinding.ActivityMainBinding
 import com.lau.google_rep.databinding.FragmentMainBinding
 import kotlinx.coroutines.NonDisposableHandle.parent
 import java.util.zip.Inflater
+import android.widget.ProgressBar
 
 
- class MainViewModel  constructor(private val repository: MainRepository)  : ViewModel() {
+class MainViewModel  constructor(private val repository: MainRepository)  : ViewModel() {
 
     val repoList = MutableLiveData<List<repo>>()
      var repoArrayList = ArrayList<repo>()
@@ -44,8 +45,9 @@ import java.util.zip.Inflater
      lateinit var handler: Handler
      var i: Int = 0
      lateinit var binding: FragmentMainBinding
-     var totalitems: Int = 4
+     var totalitems: Int = 3
      val response = repository.getAllrepos()
+     lateinit var context : Context
 
 
 
@@ -54,6 +56,7 @@ import java.util.zip.Inflater
          handler = Handler()
 
          binding.recyclerview.adapter = adapter
+         this.context = context
 
 
          val gridLayoutManager : GridLayoutManager = GridLayoutManager(context,2)
@@ -89,7 +92,10 @@ import java.util.zip.Inflater
 
          })
 
-        binding.include.search.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+
+
+
+         binding.include.search.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
              override fun onQueryTextSubmit(p0: String?): Boolean {
                  return false
              }
@@ -106,33 +112,35 @@ import java.util.zip.Inflater
      }
 
      fun loadNextPage() {
-         Log.e(TAG, "loadNextPage: $totalitems $i", )
+         Log.e(TAG, "loadNextPage: $totalitems $i")
 
          response.clone().enqueue(object : Callback<List<repo>> {
 
              override fun onResponse(call: Call<List<repo>>, response: Response<List<repo>>) {
-
-                 adapter.removeLoadingFooter()
+//
+//                 adapter.removeLoadingFooter()
                  isLoading = false
                  adapter.isLoadingAdded = false
+                 val inflatedView: View = View.inflate(context, com.lau.google_rep.R.layout.loading,null)
+
+                 val progressBar : ProgressBar = inflatedView.findViewById(com.lau.google_rep.R.id.progressBar2)
+                 progressBar.visibility = View.GONE
+
+
 
                  val results = response.body()
                  if (results != null) {
 
-                     Log.e(TAG, "onResponse: $results", )
+                     while (i<totalitems && totalitems<= results.size){
 
-                     while (i<totalitems && totalitems<= results.size + 2){
-
+                         val res = results[i]
+                         Log.e(TAG, "onResponse: $res")
                          adapter.add(results[i])
 
                          i++
-                         if (totalitems == results.size+2){
-                             Log.e(TAG, "onResponse: $totalitems ${results.size}", )
-                             adapter.removeLoadingFooter()
-                         }
                      }
-                     if (totalitems < results.size){
-                         totalitems += 4
+                     if (totalitems < results.size + 3){
+                         totalitems += 3
                      }
 
 
@@ -161,14 +169,14 @@ import java.util.zip.Inflater
 
 
                  if (results != null) {
-                     TOTAL_PAGES = results.size/4
+                     TOTAL_PAGES = (results.size/4) +1
                      repoList.postValue(results)
                      while (i<totalitems){
                          adapter.add(results[i])
                          i++
 
                      }
-                     totalitems += 4
+                     totalitems += 3
 
 
                  }

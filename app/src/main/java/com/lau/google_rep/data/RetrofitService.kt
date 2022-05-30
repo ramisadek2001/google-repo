@@ -4,10 +4,13 @@ import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Header
+import retrofit2.http.Headers
 import retrofit2.http.Query
 
 interface RetrofitService {
 
+    @Headers("Authorization: token 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")
     @GET("repos")
     fun getAllrepos() : Call<List<repo>>
 
