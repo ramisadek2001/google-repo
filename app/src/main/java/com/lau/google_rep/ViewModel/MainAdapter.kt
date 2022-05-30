@@ -13,17 +13,15 @@ import android.widget.*
 
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
-
-
-
-
+import kotlinx.coroutines.NonDisposableHandle.parent
 
 
 class MainAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() , Filterable {
 
     private val LOADING = 0
     private val ITEM = 1
-    private var isLoadingAdded = false
+    public var isLoadingAdded = true
+    lateinit var viewLoading: View
 
     private lateinit var   mlistener: onItemClickListener
     interface  onItemClickListener{
@@ -49,8 +47,7 @@ class MainAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() , Filterable
                 viewHolder = MainViewHolder(viewItem, mlistener)
             }
             LOADING -> {
-                val viewLoading: View =
-                    inflater.inflate(com.lau.google_rep.R.layout.fragment_main, parent, false)
+                 viewLoading= inflater.inflate(com.lau.google_rep.R.layout.loading, parent, false)
                 viewHolder = LoadingViewHolder(viewLoading)
             }
         }
@@ -82,7 +79,11 @@ class MainAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() , Filterable
             }
             LOADING -> {
                 val loadingViewHolder = holder as LoadingViewHolder
-                loadingViewHolder.progressBar.visibility = View.VISIBLE
+                if(!isLoadingAdded){
+                   loadingViewHolder.progressBar.visibility = View.GONE
+                }
+
+
             }
         }
 
@@ -118,6 +119,8 @@ class MainAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() , Filterable
     }
     fun removeLoadingFooter() {
         isLoadingAdded = false
+
+
         val position: Int = repos.size - 1
         val result: repo = getItem(position)
         if (result != null) {
@@ -143,7 +146,7 @@ class MainAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() , Filterable
         val progressBar: ProgressBar
 
         init {
-            progressBar = itemView.findViewById(com.lau.google_rep.R.id.progressbar)!!
+            progressBar = itemView.findViewById(com.lau.google_rep.R.id.progressBar2)!!
         }
     }
 

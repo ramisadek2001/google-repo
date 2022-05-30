@@ -11,6 +11,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import android.graphics.Movie
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -37,18 +38,20 @@ import java.util.zip.Inflater
     val adapter = MainAdapter()
 
      var currentPage = 0
-     val TOTAL_PAGES = 5
+     var TOTAL_PAGES = 5
      var isLoading = false
      var isLastPage = false
+     lateinit var handler: Handler
      var i: Int = 0
      lateinit var binding: FragmentMainBinding
-     var totalitems: Int = 3
+     var totalitems: Int = 4
      val response = repository.getAllrepos()
 
 
 
      fun initializeRecycler(binding: FragmentMainBinding, context: Context ){
          this.binding = binding
+         handler = Handler()
 
          binding.recyclerview.adapter = adapter
 
@@ -59,7 +62,9 @@ import java.util.zip.Inflater
          binding.recyclerview.addOnScrollListener(object: PaginationScrollListener(gridLayoutManager){
              override fun loadMoreItems() {
                  currentPage += 1
-                 loadNextPage()
+                 handler.postDelayed({
+                     loadNextPage()
+                 },2000)
              }
 
              override var isLastPage: Boolean = this@MainViewModel.isLastPage
@@ -109,23 +114,25 @@ import java.util.zip.Inflater
 
                  adapter.removeLoadingFooter()
                  isLoading = false
+                 adapter.isLoadingAdded = false
+
                  val results = response.body()
                  if (results != null) {
 
                      Log.e(TAG, "onResponse: $results", )
 
-                     while (i<totalitems && totalitems<= results.size + 1){
+                     while (i<totalitems && totalitems<= results.size + 2){
 
                          adapter.add(results[i])
 
                          i++
-                         if (totalitems == results.size+1){
+                         if (totalitems == results.size+2){
                              Log.e(TAG, "onResponse: $totalitems ${results.size}", )
                              adapter.removeLoadingFooter()
                          }
                      }
                      if (totalitems < results.size){
-                         totalitems += 3
+                         totalitems += 4
                      }
 
 
@@ -152,14 +159,16 @@ import java.util.zip.Inflater
                  val results: List<repo>? = response.body()
                  binding.progressbar.setVisibility(View.GONE)
 
+
                  if (results != null) {
+                     TOTAL_PAGES = results.size/4
                      repoList.postValue(results)
                      while (i<totalitems){
                          adapter.add(results[i])
                          i++
 
                      }
-                     totalitems += 3
+                     totalitems += 4
 
 
                  }

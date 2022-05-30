@@ -12,7 +12,6 @@ import com.lau.google_rep.R
 import com.lau.google_rep.ViewModel.MainViewModel
 import com.lau.google_rep.ViewModel.ViewModelFactory
 import com.lau.google_rep.data.RetrofitService
-import com.lau.google_rep.databinding.ActivityMainBinding
 import com.lau.google_rep.databinding.FragmentMainBinding
 import com.lau.google_rep.repository.MainRepository
 
