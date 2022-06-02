@@ -10,7 +10,7 @@ import retrofit2.http.Query
 
 interface RetrofitService {
 
-    @Headers("Authorization: token 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")
+   @Headers("Authorization: token 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")
     @GET("repos")
     fun getAllrepos() : Call<List<repo>>
 

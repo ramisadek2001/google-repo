@@ -3,6 +3,7 @@ package com.lau.google_rep.ViewModel
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.getIntent
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.lau.google_rep.data.repo
@@ -104,6 +105,10 @@ class MainViewModel  constructor(private val repository: MainRepository)  : View
              override fun onQueryTextChange(p0: String?): Boolean {
                  adapter.removeLoadingSearchFooter()
                 adapter.filter.filter(p0)
+                 if(p0 == ""){
+                     val intent = Intent(context,MainActivity::class.java)
+                     startActivity(context,intent, null)
+                 }
                  return false
              }
 
