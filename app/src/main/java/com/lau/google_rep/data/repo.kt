@@ -4,6 +4,6 @@ import java.security.acl.Owner
 
 //data class for the repository
 
-data class repo(val name: String, val owner: owner, val created_at: String, val stargazers_count: String) {
-    constructor() : this("",owner(),"","")
+data class repo(var id:String? = "",var name: String = "", var owner: owner = owner(), var created_at: String = "", var stargazers_count: String = "") {
+
 }

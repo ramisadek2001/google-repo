@@ -17,7 +17,6 @@ import com.lau.google_rep.ViewModel.PaginationScrollListener
 import com.lau.google_rep.ViewModel.ViewModelFactory
 import com.lau.google_rep.data.RetrofitService
 import com.lau.google_rep.data.repo
-import com.lau.google_rep.repository.MainRepository
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
